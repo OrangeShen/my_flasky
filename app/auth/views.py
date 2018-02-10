@@ -64,9 +64,10 @@ def before_request():
     @condition2: User's account hasn't been confirmed
     @condition3: Endpoint of the request is not in the auth_blueprint
     """
-    if current_user.is_authenticated and not current_user.confirmed and \
-            request.endpoint[:5] != 'auth.' and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated:
+        current_user.ping()
+        if not current_user.confirmed and request.endpoint[:5] != 'auth.':
+            return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')
@@ -81,5 +82,5 @@ def unconfirmed():
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
-    flash('A new comfirmation email has been sent to you by email.')
+    flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
