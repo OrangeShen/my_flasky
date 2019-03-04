@@ -51,7 +51,6 @@ def profile(length=25, profile_dir=None):
     app.run()
 
 
-
 @manager.command
 def deploy():
     """Run deployment tasks."""
@@ -63,6 +62,7 @@ def deploy():
     Role.insert_roles()
 
     User.add_self_follows()
+
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)

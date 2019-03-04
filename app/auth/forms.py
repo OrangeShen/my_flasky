@@ -14,11 +14,11 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
-    username = StringField('Username', validators=[DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Aa-z0-9_.]*$', 0, 'Usernames must have only letters, numbers, dots or underscores')])
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(1, 64), Regexp('^[A-Za-z][A-Aa-z0-9_.]*$', 0, 'Usernames must have only letters, numbers, dots or underscores')])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Comfirm password', validators=[DataRequired(),
-                                        EqualTo('password', message='Passwords must match.')])
+                                                              EqualTo('password', message='Passwords must match.')])
     submit = SubmitField('Register')
 
     def validate_email(self, field):

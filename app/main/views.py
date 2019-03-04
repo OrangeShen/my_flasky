@@ -30,7 +30,7 @@ def index():
     return render_template('index.html', form=form, posts=posts,
                            show_followed=show_followed, pagination=pagination)
 # 在蓝本中url_for()函数的使用方法不同，Flask会为蓝本中的全部端点加上一个命名空间，这样就可以在不同的蓝本中
-# 使用相同的断电名定义视图函数，而不会产生冲突，所以视图函数index()注册的端点名是main.index,简写为.index
+# 使用相同的断点名定义视图函数，而不会产生冲突，所以视图函数index()注册的端点名是main.index,简写为.index
 
 
 @main.route('/user/<username>')
@@ -115,8 +115,9 @@ def edit(id):
     if form.validate_on_submit():
         post.body = form.body.data
         db.session.add(post)
+        db.session.commit()
         flash('The post has been updated.')
-        return redirect(url_for('post', id=post.id))
+        return redirect(url_for('.post', id=post.id))
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 
@@ -219,6 +220,7 @@ def moderate_enable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = False
     db.session.add(comment)
+    db.session.commit()
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
 
 
@@ -229,6 +231,7 @@ def moderate_disable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = True
     db.session.add(comment)
+    db.session.commit()
     return redirect(url_for('.moderate', page=request.args.get('page', 1, type=int)))
 
 

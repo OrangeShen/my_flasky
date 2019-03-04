@@ -18,10 +18,10 @@ class Config:
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_COMMENTS_PER_PAGE = 30
     FLASKY_DB_QUERY_TIMEOUT = 0.5
+    FLASKY_SLOW_DB_QUERY_TIME = 1
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_RECORD_QUERIES = True
-
 
     @staticmethod
     def init_app(app):
@@ -41,6 +41,7 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
